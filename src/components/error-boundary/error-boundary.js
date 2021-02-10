@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import PropTypes from 'prop-types';
 import ErrorIndicator from "../error-indicator/error-indicator";
 
 export default class ErrorBoundary extends Component {
@@ -22,7 +21,3 @@ export default class ErrorBoundary extends Component {
     return children;
   }
 }
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.node.isRequired
-};

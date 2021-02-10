@@ -9,6 +9,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link as RouterLink} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({cart, favorite}) => {
   const classes = useStyles();
 
   return (
@@ -37,12 +38,12 @@ const Header = () => {
             Books Store
           </Typography>
           <Button component={RouterLink} to="/favorite">
-            <Badge badgeContent={2} color="secondary">
+            <Badge badgeContent={favorite.length} color="secondary">
               <FavoriteIcon color="secondary" />
             </Badge>
           </Button>
           <Button component={RouterLink} to="/cart">
-            <Badge badgeContent={2} color="secondary">
+            <Badge badgeContent={cart.length} color="secondary">
               <ShoppingCartIcon color="secondary" />
             </Badge>
           </Button>
@@ -52,4 +53,8 @@ const Header = () => {
   );
 }
 
-export default Header;
+const mapStateToProps = ({cart, favorite}) => {
+  return {cart, favorite};
+}
+
+export default connect(mapStateToProps)(Header);

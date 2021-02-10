@@ -1,11 +1,10 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import BookListItem from "../book-list-item";
-import {makeStyles, Grid} from "@material-ui/core";
+import { makeStyles, Grid, CircularProgress } from "@material-ui/core"
 import {connect} from 'react-redux';
-import * as actions from '../../actions';
+import {booksLoaded as booksLoadedAction} from '../../actions';
 import {Bookstore} from "../bookstore-service-context";
-
-import './book-list.css';
+import ErrorIndicator from "../error-indicator/error-indicator"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,16 +13,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BookList = ({books, booksLoaded}) => {
-  const bookStoreService = useContext(Bookstore)
-
-  useEffect(() => {
-    const books = bookStoreService.getBooks()
-    booksLoaded(books)
-  }, [])
-
+const BookList = ({books, booksLoadedAction, isBooksLoaded}) => {
+  const [error, setError] = useState(false);
+  const bookStoreService = useContext(Bookstore);
 
   const classes = useStyles();
+
+  useEffect(() => {
+    bookStoreService.getBooks(booksLoadedAction, () => {
+      setError(true)
+    })
+  }, [])
+
+  if (error) {
+    return <ErrorIndicator />
+  }
+
+  if (!isBooksLoaded) {
+    return (
+      <Grid container justify="center">
+        <Grid item>
+          <CircularProgress />
+        </Grid>
+      </Grid>
+
+    )
+  }
+
   return (
     <Grid className={classes.root} container spacing={3}>
     {
@@ -39,8 +55,10 @@ const BookList = ({books, booksLoaded}) => {
   )
 }
 
-const mapStateToProps = ({books}) => {
-  return {books};
+const mapStateToProps = ({books, isBooksLoaded}) => {
+  return {books, isBooksLoaded};
 }
 
-export default connect(mapStateToProps, actions)(BookList);
+const mapDispatchToProps = { booksLoadedAction };
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);

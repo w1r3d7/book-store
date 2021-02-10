@@ -3,7 +3,6 @@ const booksLoaded = (books) => ({
   payload: books,
 });
 
-
 export {
   booksLoaded
 }

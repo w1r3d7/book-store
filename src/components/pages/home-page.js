@@ -2,11 +2,14 @@ import React from "react";
 import {Box} from "@material-ui/core";
 
 import BookList from "../book-list"
+import ErrorBoundary from "../error-boundary"
 
 const HomePage = () => {
   return (
     <Box>
-      <BookList />
+      <ErrorBoundary>
+        <BookList />
+      </ErrorBoundary>
     </Box>
   )
 };
