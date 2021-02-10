@@ -1,12 +1,13 @@
-import React from "react"
+import React from "react";
+import {Box} from "@material-ui/core";
 
 import BookList from "../book-list"
 
 const HomePage = () => {
   return (
-    <div>
-      <BookList books={[]} />
-    </div>
+    <Box>
+      <BookList />
+    </Box>
   )
 };
 
